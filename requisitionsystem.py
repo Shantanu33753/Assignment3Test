@@ -9,7 +9,7 @@ Author: Shantanu Thakur
 
 class requisition_system:
 
-
+    #Class level counters - DRY principle applied and utilized throughout the class system
     count = 10000
     total_submitted = 0
     total_approved = 0
@@ -17,6 +17,7 @@ class requisition_system:
     total_not_approved = 0
 
     def __init__(self):   # self
+        # KISS - Beginning is readable and simple to understand
         self.date = ""
         self.staff_id = ""
         self.staff_name = ""
@@ -26,6 +27,8 @@ class requisition_system:
         self.approval_reference_number = "No"
 
     def staff_info(self):   # Main Information
+        # Collects staff info mostly - Single Responsibility
+        #Able to handles both input & output, violates the delineation of priorities - Can be improved
         print("\n--- Staff Information ---")
 
 
@@ -45,6 +48,7 @@ class requisition_system:
             if more_entries.lower() != 'yes':  #this one shows entries on function according to lower
                 break
             else:
+                #KISS - the output is straightforward and clear
 
                 print(f"\nPrinting Staff Information:")
                 print(f"Date: {self.date}")
@@ -66,10 +70,11 @@ class requisition_system:
                 self.total_price += item_price
         else:
             print("Invalid input. Please enter a valid price.")
-
+        # KISS - Keeps the cost calculation logically simple
         print(f"Total Requisition Cost: ${self.total_price:.2f}")
 
     def requisition_approval(self):
+        # Open/ Closed - the logic cannot be stretched without modification
         if self.total_price < 500:
             self.status = "Approved"
             self.approval_reference_number = f"{self.staff_id}{str(self.requisition_id)[-3:]}"
@@ -88,6 +93,7 @@ class requisition_system:
         print(f"Staff Reference: {self.requisition_id}\n")    
 
     def respond_requisition(self):
+        # YAGNI - it may be unneeded if approvals are handled
         if self.status == "Pending":
             print(f"\nResponding to Requisition ID {self.requisition_id}")
             decision = input("Enter your decision here (Approve / Pending / Not Approve ): ").strip().lower()
@@ -107,8 +113,10 @@ class requisition_system:
                 requisition_system.total_pending -= 1
             else:
                 print("No changes are made in here.")
+        # Single Responsibility - update + logic + decision in one
 
     def display_requisition(self):
+        # KISS - formatting for output is simple
         print("\n---Printing Requisition Details:---")
         print(f"Date: {self.date}")
         print(f"Requisition ID: {self.requisition_id}")
@@ -131,7 +139,7 @@ class requisition_system:
 # === Main Statistics Program ===
 
 requisition_id = []  #Changing this value in both class and work_1 from {} to [] for clear values on Statistics
-
+# DRY - For storing multiple requisitions list is reused
 while True:  # while loop
     reply = input("\nDo you want to create a new requisition? (yes/exit): ").strip().lower()
     if reply == "exit":
